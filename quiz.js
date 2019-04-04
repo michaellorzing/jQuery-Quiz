@@ -3,7 +3,7 @@ $(document).ready(function(){
 var rightAns=0;
 var wrongAns=0;
 var unanswered=0;
-var time=30000;
+var time=30;
 var intervalId;
 
 
@@ -55,24 +55,41 @@ $("#startButton").on("click", newQuiz)
 
 //create page timer function
 
-function decrement() {
-  time--;
-  if (time === 0) {
-  stop();
-  }
-}
 
 function runClock() {
   intervalId = setInterval(decrement, 1000);
 }
 
+function decrement() {
+  time--;
+  $("#mainQuiz").html("<h2>Time remaining: " + time + "</h2>");
+  if (time===0){
+    userTimeout();
+  }
+ }
+
+function userTimeout(){
+  if (time===0){
+    clearInterval(intervalId);
+  }
+}
 
 //Set up quiz page
+function quizRun(){
+  for (i = 0; i < quizQuestions.length; i++){
+  $("#mainQuiz").append("<p> quizQuestions.question[i] </p>");
+  $("#mainQuiz").append("<p> quizQuestions.choices[i]</p>");
+  }
+}
+
+
+//Run the game
+startGame();
 
 function newQuiz(){
-  startGame();
-  $("#mainQuiz").append("<h2>" + time + "</h2>");
-
+  $("#mainQuiz").append("'<h1>How much do you know about history?</h1>'")
+  runClock();
+  quizRun();
 }
 
 //display right, wrong, and unanswered
