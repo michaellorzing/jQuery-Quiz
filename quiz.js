@@ -5,44 +5,41 @@ var wrongAns=0;
 var unanswered=0;
 var time=30;
 var intervalId;
+var answerArray=[]
 
 
 //create an object with the questions in the quiz
 
 var quizQuestions =[
   {
-  question: "Who is regarded as the first European to land in North America?",
-  choices: ["Christopher Columbus", "Magellan", "Leif Erikson"],
-  correctAnswer: "Leif Erikson"},
-
-  {
-  question: "Which is the longest war in US history?",
-  choices: ["Afghan War", "Cold War", "Vietnam War"],
-  correctAnswer: "Afghan War"
+    question: "Who is regarded as the first European to land in North America?",
+    choices: ["Christopher Columbus", "Magellan", "Leif Erikson"],
+    correctAnswer: "Leif Erikson"
   },
-
   {
-  question: "The first car accident in US history occured in which state?",
-  choices: ["New York", "Ohio", "Rhode Island"],
-  correctAnswer: "Ohio"
+    question: "Which is the longest war in US history?",
+    choices: ["Afghan War", "Cold War", "Vietnam War"],
+    correctAnswer: "Afghan War"
   },
-
   {
-  question: "How many people were the Aztecs estimated to have sacrificed every year?",
-  choices: ["3,000", "80,000", "250,000"],
-  correctAnswer: "250,000"
+    question: "The first car accident in US history occured in which state?",
+    choices: ["New York", "Ohio", "Rhode Island"],
+    correctAnswer: "Ohio"
   },
-
   {
-  question: "The US Constitution was written in which year?",
-  choices: ["1776", "1787", "1792"],
-  correctAnswer: "1787"
+    question: "How many people were the Aztecs estimated to have sacrificed every year?",
+    choices: ["3,000", "80,000", "250,000"],
+    correctAnswer: "250,000"
   },
-
   {
-  question: "Which artist painted the Sistene chapel?",
-  choices: ["Da Vinci", "Rembrandt", "Michelangelo"],
-  correctAnswer: "Michelangelo"
+    question: "The US Constitution was written in which year?",
+    choices: ["1776", "1787", "1792"],
+    correctAnswer: "1787"
+  },
+  {
+    question: "Which artist painted the Sistene chapel?",
+    choices: ["Da Vinci", "Rembrandt", "Michelangelo"],
+    correctAnswer: "Michelangelo"
   },
 
 ];
@@ -62,7 +59,7 @@ function runClock() {
 
 function decrement() {
   time--;
-  $("#mainQuiz").html("<h2>Time remaining: " + time + "</h2>");
+  $("#timer").html("<h2>Time remaining: " + time + "</h2>");
   if (time===0){
     userTimeout();
   }
@@ -76,9 +73,21 @@ function userTimeout(){
 
 //Set up quiz page
 function quizRun(){
-  for (i = 0; i < quizQuestions.length; i++){
-  $("#mainQuiz").append("<p> quizQuestions.question[i] </p>");
-  $("#mainQuiz").append("<p> quizQuestions.choices[i]</p>");
+  for (var i = 0; i < quizQuestions.length; i++) {
+    $("#mainQuiz").append(`<p>${quizQuestions[i].question}</p>`);
+    for (var j = 0; j < quizQuestions[i].choices.length; j++) {
+      var choice= quizQuestions[i].choices[j]
+      var jerrysKids= `JerrysKids${i}${j}`
+      var morty= `#JerrysKids${i}${j}`
+      $("#mainQuiz").append(`<p><input class="form-check-input" value="${choice}" type="radio" id="${jerrysKids}" name="JerrysKids${i}">${choice}</p>`);
+      $(morty).on("click", function(e){
+        e.preventDefault();
+        console.log(e)
+      })
+    } 
+    
+    
+
   }
 }
 
@@ -87,19 +96,42 @@ function quizRun(){
 startGame();
 
 function newQuiz(){
-  $("#mainQuiz").append("'<h1>How much do you know about history?</h1>'")
-  runClock();
+  $("#mainQuiz").append(`<h3>How much do you know about history?</h3>`)
+  $("#startButton").hide();
   quizRun();
+  runClock();
+  $("#mainQuiz").append("<button type='button' class='btn btn-primary btn-lg' id='finishButton'>Finished!</button>");
+  finishButton();
+  //scoreCounter();
+
 }
 
 //display right, wrong, and unanswered
 
-function finalScore(){
-  if (time===0 || finishButton){
-    console.log(time);
-  }
-};
+//function scoreCounter(){
+  //if (choices===correctAnswer){
+   // rightAns++;
+ // } else if (choices!==correctAnswer){
+    //wrongAns++;
+ // } else (correctAnswer===undefined)
+   // unanswered++;
+  
+  //create finishButton to trigger new html with correct, wrong, unanswered totals. Button to bring you back to new Quiz
+//}
 
+function finishButton(){
+  $("#finishButton").on("click", finalScore)
+    //scoreCounter();  
+  }
+  
+
+//placeholders until it works "4"
+
+function finalScore(){
+  $("#mainQuiz").html(
+    "<p> Correct answers= 4 <br> Wrong answers= 4 <br> Unanswered= 4 </p> <br> <button type='button' class='btn btn-primary btn-lg' id='startButton'>Play Again!</button>");
+    startGame();
+}
 //button click to play again
 
 
